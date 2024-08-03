@@ -19,6 +19,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
+import com.viktorjordan.navigation.ui.screen.BottomNavScreen
+import com.viktorjordan.navigation.ui.screen.ModalNavigationDrawerComposable
 import com.viktorjordan.navigation.ui.theme.NavigationTheme
 import kotlinx.serialization.Serializable
 
@@ -31,7 +33,7 @@ class MainActivity : ComponentActivity() {
 				val navController = rememberNavController()
 				NavHost(
 					navController = navController,
-					startDestination = ScreenA
+					startDestination = BottomNavigationScreen
 				) {
 					composable<ScreenA> {
 						Column(
@@ -49,7 +51,9 @@ class MainActivity : ComponentActivity() {
 							}) {
 								Text(text = "Go to screen B")
 							}
-							
+							Button(onClick = { navController.navigate(ModalNavigationDrawerScreen) }) {
+								Text(text = "Go to screen ModalNavigationDrawerScreen")
+							}
 						}
 					}
 					composable<ScreenB> {
@@ -60,9 +64,13 @@ class MainActivity : ComponentActivity() {
 							horizontalAlignment = Alignment.CenterHorizontally
 						) {
 							Text(text = "${args.name}, ${args.age} years old")
-							
-							
 						}
+					}
+					composable<ModalNavigationDrawerScreen> {
+						ModalNavigationDrawerComposable()
+					}
+					composable<BottomNavigationScreen> {
+						BottomNavScreen()
 					}
 				}
 			}
@@ -79,3 +87,8 @@ data class ScreenB(
 	val age: Int
 )
 
+@Serializable
+object ModalNavigationDrawerScreen
+
+@Serializable
+object BottomNavigationScreen
