@@ -28,7 +28,6 @@ import androidx.compose.ui.unit.dp
 
 data class BottomNavigationItem(
 	val title: String,
-	val route: String,
 	val selectedIcon: ImageVector,
 	val unselectedIcon: ImageVector,
 	val hasNews: Boolean = false,
@@ -37,26 +36,25 @@ data class BottomNavigationItem(
 
 
 @Composable
-fun BottomNavScreen() {
+fun BottomNavScreen(
+
+) {
 	//List of Bottom Navigation Items
 	val items = listOf(
 		BottomNavigationItem(
 			title = "Home",
-			route = "home",
 			selectedIcon = Icons.Filled.Home,
 			unselectedIcon = Icons.Outlined.Home,
 			badgeCount = 5
 		),
 		BottomNavigationItem(
 			title = "Search",
-			route = "search",
 			selectedIcon = Icons.Filled.Search,
 			unselectedIcon = Icons.Outlined.Search,
 			hasNews = true,
 		),
 		BottomNavigationItem(
 			title = "Profile",
-			route = "profile",
 			selectedIcon = Icons.Filled.Person,
 			unselectedIcon = Icons.Outlined.Person
 		)
@@ -78,6 +76,7 @@ fun BottomNavScreen() {
 						selected = selectedItemIndex == index,
 						onClick = {
 							selectedItemIndex = index
+							
 						},
 						alwaysShowLabel = true,
 						label = {
@@ -86,7 +85,7 @@ fun BottomNavScreen() {
 						icon = {
 							BadgedBox(
 								badge = {
-									//if statment
+									//if statement
 									if (item.badgeCount != null) {
 										Badge {
 											Text(text = item.badgeCount.toString())
@@ -115,11 +114,32 @@ fun BottomNavScreen() {
 						)
 				}
 			}
+		},
+		content = { innerPadding ->
+			// Replace fixed content with a composable based on selected item
+			when (val title = items[selectedItemIndex].title) {
+				"Home" -> BottomNavHomeScreen(
+					modifier = Modifier.padding(
+						innerPadding
+					)
+				)
+				
+				"Search" -> BottomNavSearchScreen(
+					modifier = Modifier.padding(
+						innerPadding
+					)
+				)
+				
+				"Profile" -> BottomNavProfileScreen(
+					modifier = Modifier.padding(
+						innerPadding
+					)
+				)
+				
+				else -> Text("Unknown Screen") // Handle potential unknown routes
+			}
 		}
-	) {
-		// Screen content
-		Text(text = "Screen content", modifier = Modifier.padding(it))
-	}
+	)
 }
 	
 
